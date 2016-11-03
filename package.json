@@ -1,0 +1,19 @@
+{
+  "name": "ticket",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "riot components public/components/components.js && node server.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "cors": "^2.8.1",
+    "express": "^4.14.0",
+    "helmet": "^3.0.0",
+    "riotcontrol": "0.0.3",
+    "scribe-js": "^2.0.4"
+  }
+}
