@@ -9,7 +9,7 @@
                 <label for="password">Password</label>
                 <input id="password" type="password"/>
             </div>
-            <button type="button" class="button button-blue" style="text-align: center">Login</button>
+            <button type="button" onclick="{submit}" class="button button-blue" style="text-align: center">Login</button>
         </form>
     </div>
 
@@ -25,14 +25,13 @@
         var self = this;
         RC.addStore(self);
 
-        self.on('app', function (app) {
-            self.render(app);
-            self.update();
-        })
 
-        submit(data) {
-            fetchival('/users').post({name: 'Typicode', login: 'typicode'}).then(function (json) {
-                // ...
+        submit() {
+            fetchival('/api/login').post({
+              username: self.name.value,
+              password: self.password.value
+            }).then(function (json) {
+                console.log('res ', json);
             })
         }
     </script>
