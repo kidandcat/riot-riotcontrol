@@ -3,13 +3,11 @@ const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const cors = require('cors');
 const app = express();
-const cookie = require('cookie-parser');
 
 const PORT = 8000;
 
 app.use(helmet());
 app.use(cors());
-app.use(cookie());
 app.use(bodyParser.json());
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({
@@ -18,15 +16,8 @@ app.use(bodyParser.urlencoded({
 
 
 
-
-
-//ROUTES
-app.use('/',(req, res, next)=>{
-  console.log('cookie ', req.cookies);
-  next();
-});
-app.use('/', require('./api/ticket'));
-app.use('/', require('./api/user'));
+//ROUTER
+app.use('/', require('./server/user'));
 
 
 app.use((err, req, res, next) => {

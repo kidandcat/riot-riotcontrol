@@ -25,14 +25,13 @@
         var self = this;
         RC.addStore(self);
 
-
         submit() {
-            fetchival('/api/login').post({
-              username: self.name.value,
-              password: self.password.value
-            }).then(function (json) {
-                console.log('res ', json);
-            })
+          localStorage.setItem("auth", JSON.stringify({
+              headers: {
+                  'advanced-auth': self.name.value + ':' + md5(self.name.value + self.password.value)
+              }
+          }));
+          RC.trigger('app', 'home');
         }
     </script>
 </app-login>

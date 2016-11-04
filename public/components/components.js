@@ -1,12 +1,37 @@
+riot.tag2('app-skeleton', '<navbar-top></navbar-top> <div class="wrapper wrapper-fixed"> <section class="row"> <aside class="col-2"> <side-bar>Sidebar</side-bar> </aside> <main class="col-9" id="app"> </main> </section> </div>', '', '', function(opts) {
+        var self = this;
+        RC.addStore(self);
+
+        self.on('app', function (app) {
+            console.log('app:', app);
+            self.render(app);
+            self.update();
+        })
+
+        this.render = function(appName){
+          if (!localStorage.getItem("auth")) {
+              appName = 'login';
+          }
+
+          appName = 'app-' + appName;
+          document.querySelector('#app').innerHTML = '<' + appName + '></' + appName + '>';
+          riot.mount(appName);
+        }.bind(this)
+
+});
+
 riot.tag2('app-home', '<p>This is the main app</p> <ul> <li each="{users}"> {} </li> </ul>', '', '', function(opts) {
         var self = this;
         RC.addStore(self);
 
         self.users = {};
 
-        fetchival('/api/users').get().then(function (json) {
+        var auth = localStorage.getItem("auth");
+        fetchival('/api/users', JSON.parse(auth)).get().then(function (json) {
             console.log('res ', json);
             self.users = json;
+        }).catch(function (err) {
+            console.log(err)
         })
 });
 
@@ -15,32 +40,26 @@ riot.tag2('app-login', '<div class="row"> <form class="form col-2 col-left-4"> <
         RC.addStore(self);
 
         this.submit = function() {
-            fetchival('/api/login').post({
-              username: self.name.value,
-              password: self.password.value
-            }).then(function (json) {
-                console.log('res ', json);
-            })
+          localStorage.setItem("auth", JSON.stringify({
+              headers: {
+                  'advanced-auth': self.name.value + ':' + md5(self.name.value + self.password.value)
+              }
+          }));
+          RC.trigger('app', 'home');
         }.bind(this)
 });
 
-riot.tag2('app-skeleton', '<navbar-top></navbar-top> <div class="wrapper wrapper-fixed"> <section class="row"> <aside class="col-2"> <side-bar></side-bar> </aside> <main class="col-9" id="app"> </main> </section> </div>', '', '', function(opts) {
+riot.tag2('app-logout', '', '', '', function(opts) {
         var self = this;
         RC.addStore(self);
 
-        self.on('app', function (app) {
-            self.render(app);
-            self.update();
-        })
-
-        this.render = function(appName){
-          appName = 'app-' + appName;
-          document.querySelector('#app').innerHTML = '<' + appName + '></' + appName + '>';
-          riot.mount(appName);
-        }.bind(this)
+        localStorage.removeItem("auth");
+        setTimeout(function(){
+          RC.trigger('app', 'home');
+        }, 200);
 });
 
-riot.tag2('navbar-top', '<div class="navbar"> <nav> <ul> <li each="{left}"> <a onclick="{navigate}">{title}</a> </li> </ul> <ul> <li each="{right}"> <a onclick="{navigate}">{title}</a> </li> </ul> </nav> </div>', '', '', function(opts) {
+riot.tag2('navbar-top', '<div class="navbar"> <nav> <ul> <li each="{left}"> <a if="{eval(condition)}" onclick="{navigate}">{title}</a> </li> </ul> <ul> <li each="{right}"> <a if="{eval(condition)}" onclick="{navigate}">{title}</a> </li> </ul> </nav> </div>', '', '', function(opts) {
         var self = this;
         RC.addStore(self);
 
@@ -52,17 +71,19 @@ riot.tag2('navbar-top', '<div class="navbar"> <nav> <ul> <li each="{left}"> <a o
         }.bind(this)
 
         self.on('navbar-top:addMenuRight', function (test) {
+            test.condition = test.condition || true;
             self.right.push(test);
             self.update();
         })
         self.on('navbar-top:addMenuLeft', function (test) {
+            test.condition = test.condition || true;
             self.left.push(test);
             self.update();
         })
 
 });
 
-riot.tag2('side-bar', '<p>This is the sidebar</p>', '', '', function(opts) {
+riot.tag2('side-bar', '<yield></yield>', '', '', function(opts) {
         var self = this;
         RC.addStore(self);
 });

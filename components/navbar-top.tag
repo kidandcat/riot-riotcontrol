@@ -3,12 +3,12 @@
         <nav>
             <ul>
                 <li each={left}>
-                    <a onclick="{navigate}">{title}</a>
+                    <a if={eval(condition)} onclick="{navigate}">{title}</a>
                 </li>
             </ul>
             <ul>
                 <li each={right}>
-                    <a onclick="{navigate}">{title}</a>
+                    <a if={eval(condition)} onclick="{navigate}">{title}</a>
                 </li>
             </ul>
         </nav>
@@ -26,10 +26,12 @@
         }
 
         self.on('navbar-top:addMenuRight', function (test) {
+            test.condition = test.condition || true;
             self.right.push(test);
             self.update();
         })
         self.on('navbar-top:addMenuLeft', function (test) {
+            test.condition = test.condition || true;
             self.left.push(test);
             self.update();
         })

@@ -1,5 +1,5 @@
 <side-bar>
-    <p>This is the sidebar</p>
+    <yield/>
 
     <script>
         var self = this;
