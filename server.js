@@ -22,7 +22,7 @@ app.use(bodyParser.urlencoded({
 
 //ROUTES
 app.use('/', require('./api/ticket'));
-
+app.use('/', require('./api/user'));
 
 
 app.use((err, req, res, next) => {

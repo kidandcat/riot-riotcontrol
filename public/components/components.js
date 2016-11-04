@@ -4,10 +4,9 @@ riot.tag2('app-home', '<p>This is the main app</p>', '', '', function(opts) {
 
 });
 
-riot.tag2('app-login', '<p>This is the login app</p>', '', '', function(opts) {
+riot.tag2('app-login', '<div class="row"> <form class="form col-2 col-left-4"> <div class="form_group"> <label for="name">Username</label> <input id="name" type="text"> </div> <div class="form_group"> <label for="password">Password</label> <input id="password" type="password"> </div> <button type="button" class="button button-blue" style="text-align: center">Login</button> </form> </div>', 'button, input { width: 100%; }', '', function(opts) {
         var self = this;
         RC.addStore(self);
-
 });
 
 riot.tag2('app-skeleton', '<navbar-top></navbar-top> <div class="wrapper wrapper-fixed"> <section class="row"> <aside class="col-2"> <side-bar></side-bar> </aside> <main class="col-9" id="app"> </main> </section> </div>', '', '', function(opts) {
