@@ -5,8 +5,8 @@
         RC.addStore(self);
 
         localStorage.removeItem("auth");
-        setTimeout(function(){
+        later(function(){
           RC.trigger('app', 'home');
-        }, 200);
+        });
     </script>
 </app-logout>

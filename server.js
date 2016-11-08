@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({
 
 
 //ROUTER
-app.use('/', require('./server/user'));
+app.use('/', require('./server/controller'));
 
 
 app.use((err, req, res, next) => {

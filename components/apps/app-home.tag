@@ -1,25 +1,22 @@
 <app-home>
-    <p>This is the main app</p>
+    <p>Admin V4 Users</p>
     <ul>
         <li each={users}>
-            {}
+            {username}
         </li>
     </ul>
-
     <script>
         var self = this;
         RC.addStore(self);
 
-        
-
         self.users = {};
 
-        var auth = localStorage.getItem("auth");
-        fetchival('/api/users', JSON.parse(auth)).get().then(function (json) {
+        fetchival('/api/users', JSON.parse(localStorage.getItem("auth"))).get().then(function (json) {
             console.log('res ', json);
             self.users = json;
+            self.update();
         }).catch(function (err) {
             console.log(err)
-        })
+        });
     </script>
 </app-home>
